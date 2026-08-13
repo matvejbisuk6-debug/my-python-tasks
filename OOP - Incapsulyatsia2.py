@@ -38,14 +38,17 @@ class Thermometer:
     def __init__(self, celsius: int):
         self.__celsius = celsius
 
-    def get_temperature(self, value: int):
+    def get_temperature(self):
+        return self.__celsius
+
+    def set_temperature(self, value: int):
         if value > 273.15 and value < 1000:
             self.__celsius = value
         else:
             return "Предупреждение!Введено некоректное значение!"
 
 temperature = Thermometer(0)
-temperature.get_temperature(-25)
+temperature.set_temperature(-25)
 print(temperature.get_temperature())
 
 #Задача 4
