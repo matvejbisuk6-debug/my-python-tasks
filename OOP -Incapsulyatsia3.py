@@ -51,3 +51,33 @@ moneys_bank = Bank(10000, 0.15, "1234")
 moneys_bank.deposit(40000)
 print(moneys_bank.get_history("1234"))
 print(moneys_bank.withdraw)
+
+#Задача 3
+class Game:
+    def __init__(self, hp: int, based_damage: int, coordination: str, defender: bool, coordinates_of_enemy:str):
+        self.__hp = hp
+        self.based_damage = based_damage
+        self.__coordination = coordination
+        self.__defender = defender
+        self.coordination_of_enemy = coordinates_of_enemy
+
+    @property
+    def player(self):
+        return f"Игрок жив и наносит удар по координатамм врага {self.coordination_of_enemy}"
+
+    def heal(self):
+        if self.__hp > 0 and self.__hp <= 100:
+            print(f"Игрок возвращает урон на координаты {self.coordination_of_enemy}")
+
+    def take_damage(self, amount: int):
+        if self.__defender == True:
+            amount -= 10
+            if self.__hp > 0:
+                self.__hp -= amount
+                print("Игрок живой продолжает битву")
+            else:
+                print("Игрок мертв")
+
+rpg_game = Game(100, 5, "27.18181.111", True, "91.18291.129")
+rpg_game.take_damage(20)
+print(rpg_game.player)
