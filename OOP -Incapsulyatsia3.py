@@ -81,3 +81,48 @@ class Game:
 rpg_game = Game(100, 5, "27.18181.111", True, "91.18291.129")
 rpg_game.take_damage(20)
 print(rpg_game.player)
+
+#Задача 4
+class Api:
+    def __init__(self, secret_api_key: int, connection_status: bool, weather_in_Pereslavl: int):
+        self.__secret_api_key = secret_api_key
+        self.__connection_status = connection_status
+        self.weather_in_Pereslavl = weather_in_Pereslavl
+
+    @property
+    def send_data(self):
+        return f"Температура на метостанции в Переславле-Залесском изменена и равна {self.weather_in_Pereslavl} градусов"
+
+    def connect(self, new_temperature: int, enter_api: int):
+        if enter_api == self.__secret_api_key and self.__connection_status == True:
+            self.weather_in_Pereslavl = new_temperature
+            print(f"Темература равна {self.weather_in_Pereslavl} градусов")
+        else:
+            print("API ключ введен некорректно, либо статус подключения уровня false")
+
+weather_api = Api(18181818, True, +18)
+weather_api.connect(+19, 18181818)
+print(weather_api.send_data)
+
+#Задача 5
+class Climate:
+    def __init__(self, temperature: int, fan_speed: int, password: int):
+        self.__temperature = temperature
+        self.fan_speed = fan_speed
+        self.__password = password
+
+    @property
+    def temperature(self):
+        return f"Новый климат контроль равен температуре {self.__temperature} градусов, бороты вентилятора {self.fan_speed}"
+
+    def climate_controle(self, enter_password: int, new_temperature: int, new_fan_speed: int):
+        if enter_password == self.__password:
+            self.__temperature = new_temperature
+            self.fan_speed = new_fan_speed
+            print(f"Текущий климат контроль в комнате: Температура {self.__temperature} градусов, скорость вентилятора: {self.fan_speed}")
+        else:
+            print(f"Неправильный пароль, климат контроль не отображается")
+
+climate_room = Climate(30, 1, 127171)
+climate_room.climate_controle(127171, +22, 4)
+print(climate_room.temperature)
