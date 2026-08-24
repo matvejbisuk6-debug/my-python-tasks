@@ -46,3 +46,61 @@ smoke = SmokeSensor("Зал")
 print(sensor.get_status())
 print(temp_sensor.get_status())
 print(smoke.get_status())
+
+#Задача 3
+class BaseAccount:
+    def __init__(self, balance: int):
+        self.balance = balance
+
+    def wihdraw(self, amount):
+        if self.daysleft > amount:
+            self.daysleft -= amount
+            return True
+        else:
+            return False
+class SavingAccount(BaseAccount):
+    def __init__(self, balance: int, min_balance: int):
+        super().__init__(balance)
+        self.min_balance = min_balance
+
+    def withdraw(self, amount):
+        if self.min_balance < self.balance:
+            self.balance -= amount
+            return True
+        else:
+            return False
+
+base = BaseAccount(1000)
+saving = SavingAccount(1000, 200)
+print(base.wihdraw())
+print(saving.wihdraw())
+
+#Задача 4
+class Ticket:
+    def __init__(self, seat_number: int, base_price: int):
+        self.seat_number = seat_number
+        self.base_price = base_price
+
+    def get_price(self):
+        return self.base_price
+
+class VipTicket(Ticket):
+    def __init__(self, seat_number, base_price: int, has_lounge_access: bool):
+        super().__init__(seat_number, base_price)
+        self.has_lounge_access = has_lounge_access
+
+    def get_price(self):
+        self.base_price *= 1.5
+        return self.base_price
+
+    def get_perks(self):
+        if self.has_lounge_access == True:
+            return ["Проход без очереди", "Доступ в Лаундж"]
+        else:
+            return ["Проход без очереди"]
+
+ticket = Ticket(5, 200)
+vip = VipTicket(5, 200, True)
+print(ticket.get_price())
+print(vip.get_price())
+print(vip.get_perks())
