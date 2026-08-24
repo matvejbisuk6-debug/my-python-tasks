@@ -104,3 +104,68 @@ vip = VipTicket(5, 200, True)
 print(ticket.get_price())
 print(vip.get_price())
 print(vip.get_perks())
+
+#Задача 5
+class Printer:
+    def __init__(self, ink_level: int):
+        self.ink_level = ink_level
+
+    def print_page(self, text: str):
+        if self.ink_level >= 5:
+            self.ink_level -= 5
+            return f"{text}. Осталось {self.ink_level} чернил"
+        else:
+            return "Нет чернил"
+
+class ColorPrinter(Printer):
+    def __init__(self, ink_level: int, color_ink_level: int):
+        super().__init__(ink_level)
+        self.color_ink_level = color_ink_level
+
+    def print_page(self, text: str):
+        if self.ink_level >= 2 and self.color_ink_level >= 7:
+            self.ink_level -= 2
+            self.color_ink_level -= 7
+            return f"Осталось {self.ink_level} черных чернил и {self.color_ink_level} цветных чернил"
+        else:
+            return "Нет чернил"
+
+printer = Printer(100)
+color = ColorPrinter(100, 100)
+print(printer.print_page("Привет, как дела?"))
+print(color.print_page("Привет, как дела?"))
+
+#Задача 6
+class Subscription:
+    def __init__(self, username: str, daysleft: int):
+        self.username = username
+        self.daysleft = daysleft
+
+    def access_content(self):
+        if self.daysleft > 0:
+            self.daysleft -= 1
+            return True
+        else:
+            return False
+
+class AutoRenewSubscription(Subscription):
+    def __init__(self, username: str, daysleft: int, card_balance: int, renew_cost: int):
+        super().__init__(username, daysleft)
+        self.card_balance = card_balance
+        self.renew_cost = renew_cost
+
+    def access_content(self):
+        if self.daysleft > 0:
+            return super().access_content()
+        elif self.daysleft == 0:
+            if self.card_balance >= self.renew_cost:
+                self.card_balance -= self.renew_cost
+                self.daysleft += 30
+                return True
+            else:
+                return False
+
+subscription = Subscription("Matvey", 30)
+auto_renew = AutoRenewSubscription("Matvey", 30, 1000, 300)
+print(subscription.access_content())
+print(auto_renew.access_content())
