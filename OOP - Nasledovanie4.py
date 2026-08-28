@@ -1,4 +1,7 @@
 #Задача 1
+from types import new_class
+
+
 class Character:
     def __init__(self, name: str, health: int, damage: int):
         self.name = name
@@ -94,3 +97,82 @@ help = HelpCommand("Matvey", 19, True)
 print(base.execute())
 print(setting.execute())
 print(help.execute("помириться с другом"))
+
+#Задача 3
+class Employee:
+    def __init__(self, name: str, based_rate: int, bonus: float):
+        self.name = name
+        self.based_rate = based_rate
+        self.bonus = bonus
+
+class Developer(Employee):
+    def __init__(self, name: str, based_rate: int, bonus: int, tg_bot_freelance: int):
+        super().__init__(name, based_rate, bonus)
+        self.tg_bot_freelance = tg_bot_freelance
+
+    def calculate_salary(self):
+        if self.based_rate > 0:
+            salary = self.based_rate + self.tg_bot_freelance + self.bonus
+            return f"Итоговый оклад разработчика {self.name} - {salary} рублей"
+        else:
+            return "Error, вы не работали"
+
+class Freelance(Employee):
+    def __init__(self, name: str, based_rate: int, bonus: int, hours: int):
+        super().__init__(name, based_rate, bonus)
+        self.hours = hours
+
+    def calculate_salary(self):
+        if self.based_rate > 0:
+            salary = (self.based_rate + self.bonus) + (self.hours * self.based_rate)
+            return f"Итоговый оклад фрилансера {self.name} - {salary} рублей"
+        else:
+            return "Error"
+
+developer = Developer("Matvey", 50000, 10000, 5000)
+freelance = Freelance("Alqxey", 200, 5000, 160)
+print(developer.calculate_salary())
+print(freelance.calculate_salary())
+
+#Задача 4
+class Parser:
+    def __init__(self, name: str, price_salary: int, internet: bool, errors: bool):
+        self.name = name
+        self.price_salary = price_salary
+        self.internet = internet
+        self.errors = errors
+        self.parser = {}
+
+class AvitoParser(Parser):
+    def __init__(self, name: str, price_salary: int, internet: bool, errors: bool, city: str, discount: float):
+        super().__init__(name, price_salary, internet, errors)
+        self.city = city
+        self.discount = discount
+
+    def api_parser(self):
+        if self.internet == True and self.errors == False:
+            new_price = self.price_salary - (self.price_salary * self.discount)
+            self.parser[self.name] = new_price
+            return f"Товар {self.name} без скидки стоит {self.price_salary} рублей, а со скидкой {new_price} рублей, местоположение - нп. {self.city}"
+        else:
+            return "товар не добавлен, error"
+
+class HabrParser(Parser):
+    def __init__(self, name: str, price_salary: int, internet: bool, errors: bool, city: str, bonus: int):
+        super().__init__(name, price_salary, internet, errors)
+        self.city = city
+        self.bonus = bonus
+
+    def api_parcer(self):
+        if self.internet == True and self.errors == False:
+            new_price = self.price_salary + self.bonus
+            self.parser[self.name] = new_price
+            print(self.parser)
+            return f"Бэкэндер {self.name} получил оффер на работу в нп. {self.city} и будет получать {new_price} рублей в месяц"
+        else:
+            return "Error"
+
+avito = AvitoParser("Lenovo Legion", 40000, True, False, "Переславль-Залесский", 0.20)
+habr = HabrParser("Матвей", 80000, True, False, "Москва", 20000)
+print(avito.api_parser())
+print(habr.api_parcer())
