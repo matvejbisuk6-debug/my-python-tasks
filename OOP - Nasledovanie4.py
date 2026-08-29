@@ -176,3 +176,42 @@ avito = AvitoParser("Lenovo Legion", 40000, True, False, "Переславль-�
 habr = HabrParser("Матвей", 80000, True, False, "Москва", 20000)
 print(avito.api_parser())
 print(habr.api_parcer())
+
+#Задача 5
+class BankAccount:
+    def __init__(self, balance: int, pin: int):
+        self.balance = balance
+        self.pin = pin
+
+class SavingAccount(BankAccount):
+    def __init__(self, balance: int, pin: int, percent: float, credit:bool):
+        super().__init__(balance, pin)
+        self.percent = percent
+        self.credit = credit
+
+    def take_credit(self, enter_pin: int, money_credit: int):
+        if self.balance > 0 and enter_pin == self.pin and self.credit == True:
+            new_balance = money_credit + self.balance
+            return f"Вы оформили кредит под {self.percent} процентов на сумму {money_credit}, теерь ваш баланс равен {new_balance} рублей"
+        else:
+            return "Кредит не оформлен, error"
+
+class CreditAccount(BankAccount):
+    def __init__(self, balance: int, pin: int, credit: bool, salary: int, percent: float):
+        super().__init__(balance, pin)
+        self.credit = credit
+        self.salary = salary
+        self.percent = percent
+
+    def take_credit(self, enter_pin: int, money_credit: int):
+        if self.balance > 0 and enter_pin == self.pin and self.credit == True:
+            new_salary = self.salary - (self.salary * self.percent)
+            new_balance = self.balance - (self.salary - self.percent)
+            return f"Вы выплатили кредит в {money_credit} рублей - итоговая арплата равна {new_salary} рублей, а баланс равен {new_balance} рублей"
+        else:
+            return "За вами придут коллекторы, вы ничего не выполнили"
+
+save = SavingAccount(50000, 1000, 1000, 1234)
+credit = CreditAccount(50000, 1000, 1000, 0.15, 1234)
+print(save.take_credit(1234, 20000))
+print(credit.take_credit(1234, 20000))
