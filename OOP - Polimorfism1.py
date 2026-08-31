@@ -1,88 +1,65 @@
-#Задача 1
-class Dog:
-    def speak(self):
-        return "Гав гав!"
+#Задача 5
+class Fireball:
+    def __init__(self, hp: int):
+        self.hp = hp
 
-class Cat:
-    def speak(self):
-        return "Мяу!"
+    def cast(self, target_hp: int):
+        self.hp -= target_hp
+        return f"Огненный шар наносит 50 урона, осталось по итогу {self.hp}"
 
-class Cow:
-    def speak(self):
-        return "Му-у-у!"
+class Heal(Fireball):
+    def __init__(self, hp: int):
+        super().__init__(hp)
 
-def make_animal_speak(animal_object):
-    print(animal_object.speak())
+    def cast(self, target_hp: int):
+        self.hp += target_hp
+        return  f"Лечение восстанавливает 40 здоровья, по итогу у вас {self.hp}"
 
-make_animal_speak(Dog())
-make_animal_speak(Cat())
-make_animal_speak(Cow())
+class Freeze(Fireball):
+    def __init__(self, hp: int):
+        super().__init__(hp)
 
-#Задача 2
-class TxtFile:
-    def open_file(self):
-        return "Открываю текстовый файл в блокноте"
+    def cast(self):
+        return "Цель заморожена на 1 ход"
 
-class PdfFile:
-    def open_file(self):
-        return "Открываю PDF - файл в adobe reader"
+fireball = Fireball(100)
+heal = Heal(100)
+freeze = Freeze(100)
+print(fireball.cast(50))
+print(heal.cast(40))
+print(freeze.cast())
 
-class Mp3File:
-    def open_file(self):
-        return "Запускаю аудиофайл в плеере"
+#Задача 6
+class Button:
+    def render(self):
+        return "[ Кнопка ]"
 
-def make_file_open(file_object):
-    print(file_object.open_file())
+class InputField:
+    def render(self):
+        return "[ Введите текст ]"
 
-make_file_open(TxtFile())
-make_file_open(PdfFile())
-make_file_open(Mp3File())
+class Checkbox:
+    def render(self):
+        return "[ [x] Чекбокс ]"
 
-#Задача 3
-class Shape:
-    def __init__(self, a: int):
-        self.a = a
+class Window:
+    def __init__(self, name: str):
+        self.name = name
+        self.widgets = []
 
-    def get_area(self):
-        return 0
+    def add_widget(self, widget: str):
+        self.widgets.append(widget)
+        return self.widgets
 
-class Square(Shape):
-    def __init__(self, a: int):
-        super().__init__(a)
+    def render(self):
+        return f"Название окна - {self.name}"
 
-    def get_area(self):
-        s1 = self.a * self.a
-        return f"Площадь квадрата равна {s1} см2"
-
-class Circle(Shape):
-    def __init__(self, r: int, p: float):
-        self.r = r
-        self.p = p
-
-    def get_area(self):
-        s2 = self.p * (self.r * self.r)
-        return f"Площадь круга равна {s2} см"
-
-shapes = [Square(5), Circle(3, 3.14)]
-for s in shapes:
-    print(s.get_area())
-
-#Задача 4
-class CreditCardPayment:
-    def pay(self, amount: int):
-        return f"Оплачено {amount} рублей с банковской карты. Комиссия 2%"
-
-class CryptioCardPayment(CreditCardPayment):
-    def pay(self, amount: int):
-        return f"Оплачено {amount} рублей в криптовалюте. Комиссия 0%"
-
-class SbpPayment(CreditCardPayment):
-    def pay(self, amount: int):
-        return f"Оплачено {amount} рублей. По QR коду через СБП"
-
-def payment(payment_object, amount: int):
-    print(payment_object.pay(amount))
-
-payment(CreditCardPayment(), 500)
-payment(CryptioCardPayment(), 500)
-payment(SbpPayment(), 500)
+button = Button()
+input = InputField()
+checkbox = Checkbox()
+window = Window("Pycharm")
+print(button.render())
+print(input.render())
+print(checkbox.render())
+print(window.add_widget("Время"))
+print(window.render())
