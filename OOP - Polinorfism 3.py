@@ -139,3 +139,44 @@ def photo_filter():
         print(filter.apply_filter(100))
 
 photo_filter()
+
+#Задача 5
+class PercentDiscount:
+    def __init__(self, percent: float):
+        self.percent = percent
+
+    def calculate(self, total_price: int):
+        total_price -= total_price * (self.percent / 100)
+        return f"Цена с процентной скидкой равна {total_price}"
+
+class Absolute_discount:
+    def __init__(self, fiction_price: int):
+        self.fiction_price = fiction_price
+
+    def calculate(self, total_price: int):
+        total_price -= self.fiction_price
+        if self.fiction_price > 0:
+            return f"Цена с абсолютной скидкой равна {self.fiction_price}"
+        else:
+            return "Ошибка"
+
+class TwoGetOneFreeDiscount:
+    def __init__(self):
+        self.all_price = {"Молоко": 70, "Хлеб": 40, "Вода": 50}
+
+    def calculate(self, total_price: int):
+        min_price = min(self.all_price.values())
+        total_price -= min_price
+        return f"Скидка третьего по самой низкой цене товара равна {total_price}"
+
+class Order:
+    def get_final_cost(self):
+        current_basket_sum = 200
+        discount_list = [PercentDiscount(100), Absolute_discount(100), TwoGetOneFreeDiscount()]
+
+        for discount in discount_list:
+            print(discount.calculate(current_basket_sum))
+
+order = Order()
+order.get_final_cost()
+
