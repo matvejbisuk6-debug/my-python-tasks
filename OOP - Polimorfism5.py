@@ -59,7 +59,6 @@ class GameObject:
         self.weapon_damage = weapon_damage
         self.armor = armor
         self.type = type
-        self.dict_of_enemies = []
 
     def update(self):
         return f"Имя объекта - {self.name}, Хп - {self.hp}, Оружие - {self.weapon}, Урон данного оружия - {self.weapon_damage}, броня - {self.armor}, Тип объекта - {self.type}"
@@ -75,7 +74,6 @@ class Player(GameObject):
             print(f"враг-приспешник {enemy1} бьет вас, итого жизней {self.hp}")
             hp1 -= self.weapon_damage
             if self.armor == True or hp1 <= self.weapon_damage:
-                self.dict_of_enemies.append(enemy1)
                 return f"У игрока {self.name} Защита равна {self.armor}, урон противника не прошел, игрок убил противника"
             else:
                 self.hp -= damage
@@ -113,3 +111,50 @@ def fight():
     print(player.update("Matvey", player.hp, 50))
 
 fight()
+
+#Задача 3
+class DocumentExporter:
+    def __init__(self, name: str, file_format: str, corrupted_file: bool):
+        self.name = name
+        self.file_format = file_format
+        self.corrupted_file = corrupted_file
+
+class PdfExporter(DocumentExporter):
+    def __init__(self, name: str, file_format: str, corrupted_file: bool):
+        super().__init__(name, file_format, corrupted_file)
+
+    def save(self, saver: str):
+        if self.file_format == saver and self.corrupted_file == False:
+            return f"Файл {self.name} с форматом {self.file_format} успешно сохранен!"
+        else:
+            return f"Ошибка файл {self.name} не сохранен"
+
+class CsvExporter(DocumentExporter):
+    def __init__(self, name: str, file_format: str, corrupted_file: bool):
+        super().__init__(name, file_format, corrupted_file)
+
+    def save(self, saver: str):
+        if self.file_format == saver and self.corrupted_file == False:
+            return f"Файл {self.name} с форматом {self.file_format} успешно сохранен!"
+        else:
+            return f"Ошибка файл {self.name} не сохранен"
+
+class JsonExporter(DocumentExporter):
+    def __init__(self, name: str, file_format: str, corrupted_file: bool):
+        super().__init__(name, file_format, corrupted_file)
+
+    def save(self, saver: str):
+        if self.file_format == saver and self.corrupted_file == False:
+            return f"Файл {self.name} с форматом {self.file_format} успешно сохранен!"
+        else:
+            return f"Ощибка файл {self.name} не сохранен"
+
+def export():
+    exporter_list = [PdfExporter("Текст", "Pdf", False), CsvExporter("Таблица", "Csv", False), JsonExporter("Код", "Json", False)]
+
+    for exporter in exporter_list:
+        print(exporter.save("Pdf"))
+
+export()
+
+#
