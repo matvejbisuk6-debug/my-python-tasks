@@ -46,3 +46,57 @@ def new_time(sleep, b):
     return sleep + b
 
 print(new_time(1, 0))
+
+#Задача 4
+def my_decorator(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        print("Аргументы функции:", args, kwargs)
+        return func(*args, **kwargs)
+    return wrapper
+
+@my_decorator
+def greet(a, b):
+    if type(a) is int and type(b) is int:
+        return "Типы данных верны"
+    else:
+        return "Ошибка: Допустимы только целые числа"
+
+print(greet(5,"10"))
+
+#Задача 5
+def my_decorator(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        wrapper.counter += 1
+        print("Некая функция вызвана", args, kwargs)
+        return func(*args, **kwargs)
+    wrapper.counter = 0
+    return wrapper
+
+@my_decorator
+def function(name_function):
+    return f"Функция {name_function} вызвана {function.counter} раз"
+
+print(function("Функция 1"))
+
+#Задача 6
+def my_decorator(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        print("Решение начато")
+        result = func(*args, **kwargs)
+        print("Решение закончено")
+        return result
+    wrapper.cache = {}
+    return wrapper
+
+@my_decorator
+def get_data(dict1, value1, key1):
+    if key1 not in dict1:
+        dict1[key1] = value1
+        return dict1
+    else:
+        return "Значения в кэш не добавлены"
+
+print(get_data({}, 2, "Пока"))
