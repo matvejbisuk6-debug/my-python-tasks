@@ -43,3 +43,54 @@ def time_check():
 print(time_check())
 
 #Задача 3
+def strip_strings(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        result = func(*args, **kwargs)
+        result = result.strip()
+        return result
+    return wrapper
+
+@strip_strings
+def correct_text():
+    return " Hello world "
+
+print(correct_text())
+
+#Задача 4
+def allow_roles(dict):
+    def decorator(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            result = func(*args, **kwargs)
+            if result not in dict:
+                return True
+            else:
+                return False
+        return wrapper
+    return decorator
+
+@allow_roles(["admin", "editor"])
+def check_roles(role):
+    return role
+
+print(check_roles("programmer"))
+
+#Задача 5
+def register_action(command_name):
+    def decorator(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            result = func(*args, **kwargs)
+            commands = {}
+            commands[command_name] = func
+            print(commands)
+            return result
+        return wrapper
+    return decorator
+
+@register_action("/start")
+def start_bot():
+    return "Приветствие"
+
+print(start_bot())
