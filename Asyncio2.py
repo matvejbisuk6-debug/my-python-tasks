@@ -36,3 +36,14 @@ async def main():
     print(results)
 
 asyncio.run(main())
+
+#Задача 3
+async def parse_page(page_num):
+    print("Интернет страница магазина, скачивается")
+    await asyncio.sleep(1)
+    return [{"id": 1, "name": "Товар 1"}]
+
+async def main():
+    tasks = await  asyncio.gather(
+        parse_page([])
+    )
