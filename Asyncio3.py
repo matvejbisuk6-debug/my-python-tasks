@@ -40,3 +40,30 @@ if __name__ == "__main__":
     asyncio.run(main())
 
 #Задача 3
+async def order_producer(queue):
+    orders = ["Заказ №1", "Заказ №2", "Заказ №3", "Заказ №4", "Заказ №5"]
+    for order in orders:
+        await queue.put(order)
+    await asyncio.sleep(1)
+
+async def order_worker(queue):
+    while True:
+        order = await queue.get()
+        await asyncio.sleep(1.5)
+        print(f"Заказ {order} успешно обработан")
+        queue.task_done()
+
+async def main_3():
+    queue = asyncio.Queue()
+
+    producer = asyncio.create_task(order_producer(queue))
+    worker = asyncio.create_task(order_worker(queue))
+
+    await queue.join()
+
+    worker.cancel()
+
+if __name__ == "__main__":
+    asyncio.run(main_3())
+
+#Задача 4
