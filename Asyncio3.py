@@ -67,3 +67,45 @@ if __name__ == "__main__":
     asyncio.run(main_3())
 
 #Задача 4
+async def generate_report():
+    try:
+        print("Файл генерируется...")
+        await asyncio.sleep(4)
+    except asyncio.CancelledError:
+        print("Генерация прервана")
+        raise
+
+async def main():
+    task = asyncio.create_task(generate_report())
+
+    await asyncio.sleep(2)
+
+    try:
+        task.cancel()
+        await task
+    except asyncio.CancelledError:
+        print("Генерация отчета успешно отменена пользователем, ресурсы свободны.")
+
+if __name__ == "__main__":
+    asyncio.run(main())
+
+#Задача 5
+async def fetch_news(delay, news_list):
+    await asyncio.sleep(delay)
+    return news_list
+
+async def edit_news():
+    edit_list = await asyncio.gather(
+        fetch_news(1, ["Погода", "Спорт"]),
+        fetch_news(2, ["Политика", "Кризис", "Экономика"])
+    )
+
+    results = edit_list[0] + edit_list[1]
+    if "Кризис" in results:
+        results.remove("Кризис")
+    print(results)
+    return results
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
