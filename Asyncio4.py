@@ -60,11 +60,59 @@ async def fetch_metrics(server_id, download):
     if server_id == 2:
         await asyncio.sleep(100)
     elif server_id == 4:
-        print("ConnectionError")
+        raise ConnectionError("Error")
     else:
         return download
 
 async def download_main():
-    
+    server_list = await asyncio.gather(
+        fetch_metrics(1, 1),
+        fetch_metrics(2, 3),
+        fetch_metrics(3, 5),
+        fetch_metrics(4, 7),
+        fetch_metrics(6, 9),
+        return_exceptions = True
+    )
 
+    await asyncio.sleep(3)
 
+    print("---Результаты запросов к серверам---")
+
+    print(f"Итоговый список результатов: {server_list}")
+
+    print(f"Что вернул сервер 4: {server_list[3]}")
+
+if __name__ == "__main__":
+    asyncio.run(download_main())
+
+#Задача 5
+async def worker(worker_id, event):
+    print(f"Воркер {worker_id} и ждет очистки кэша...")
+    await event.wait()
+    return f"Воркер {worker_id} начал работу с чистым кэшем"
+
+async def cache_cleaner(event):
+    await asyncio.sleep(4)
+    print("---КЭШ УСПЕШНО ОЧИЩЕН---")
+    event.set()
+
+async def main():
+    event = asyncio.Event()
+
+    print("Запускаем воркеры и очистку кэша...")
+
+    worker_list = asyncio.gather(
+        worker("Первый", event=event),
+        worker("Второй", event=event),
+        worker("Третий", event=event)
+    )
+    print("\n--- Результаты работы ---")
+    print(worker_list)
+
+    await asyncio.sleep(3)
+    worker_list.cancel()
+
+    print(event)
+
+if __name__ == "__main__":
+    asyncio.run(main())
