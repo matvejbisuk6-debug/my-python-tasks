@@ -1,4 +1,9 @@
+import functools
+
 #Задача 1
+import asyncio
+
+
 def calculate_delivery(distance):
     if distance <= 10:
         return "Базовая цена 200 рублей"
@@ -41,3 +46,33 @@ print(student.add_grade(5))
 print(student.get_average())
 
 #Задача 4
+async def download_file(file_name, delay):
+    print(f"Начало загрузки {file_name}...")
+    await asyncio.sleep(delay)
+    print(f"Файл {file_name} спешно скачан за {delay} секунд")
+
+async def main():
+    download = await asyncio.gather(
+        download_file("Море 2007", 1),
+        download_file("День рождения 2013", 2),
+        download_file("Привет из 2010", 3)
+    )
+    print("Все результаты получены: ", download)
+
+asyncio.run(main())
+
+#Задача 5
+def log_arguments(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        print(f"Вызов функции {func.__name__} c аргуметами {func}")
+        result = func(*args, **kwargs)
+        return f"Функция {func.__name__} вернула {result}"
+    return wrapper
+
+
+@log_arguments
+def multiply(a, b):
+    return a * b
+
+print(multiply(3, 2))
