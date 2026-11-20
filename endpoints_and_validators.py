@@ -1,8 +1,9 @@
 from idlelib.query import Query
-from typing import Annotated, Literal
+from typing import Annotated, Literal, Optional
+from datetime import date
 
 from fastapi import FastAPI, Query
-from pydantic import BaseModel, EmailStr, Field, field_validator
+from pydantic import BaseModel, EmailStr, Field, field_validator, model_validator
 
 app = FastAPI()
 #Задача 1
@@ -67,3 +68,33 @@ def create_comment(comment: CommentCreate):
     return comment
 
 #Задача 5
+class BookingRequest(BaseModel):
+    check_in: date
+    check_out: date
+    guest: int = Field(ge=1, le=4)
+    promo_code: Optional[str] = None
+
+@model_validator(mode="after")
+def check_booking_request(self) -> "BookingRequest":
+    if self.check_in >= self.check_out:
+        raise ValueError("Даты указаны некорректно")
+    return self
+
+@app.post("/booking/")
+def booking_post(booking: BookingRequest):
+    return booking
+
+#Задача 6
+class PasswordReset(BaseModel):
+    new_password: str = Field(min_length=1, max_length=8)
+    confirm_password:str = Field(min_length=1, max_length=8)
+
+@model_validator(mode="after")
+def check_password(self) -> "PasswordReset":
+    if self.new_password != self.confirm_password and len(self.new_password) > 8:
+        raise ValueError("Ошибка пароли несовпалают или введено недостаточно символов")
+    return self
+
+@app.post("/enter_password/")
+def password_post(password: PasswordReset):
+    return password
